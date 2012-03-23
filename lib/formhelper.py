@@ -20,6 +20,17 @@ class FormHelper(object):
 
     def __init__(self, form):
         self._form = form
+        self._param_stack = []
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, *args):
+        self._param_stack.pop()
+
+    def param(self, name):
+        self._param_stack.append(name)
+        return self
 
     def ec(self, name):
         """returns 'class="err-exist"' when form parameter has error."""

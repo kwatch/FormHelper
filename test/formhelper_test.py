@@ -78,6 +78,20 @@ with topic('FormHelper'):
         return FormHelper(invalid_form)
 
 
+    with topic('#param()'):
+
+        @spec("push/pop parameter name.")
+        def _(self, valid_form_helper):
+            fh = valid_form_helper
+            with fh.param('name'):
+                with fh.param('age'):
+                    with fh.param('birthday'):
+                        fh._param_stack == ['name', 'age', 'birthday']
+                    fh._param_stack == ['name', 'age']
+                fh._param_stack == ['name']
+            fh._param_stack == []
+
+
     with topic('#ec()'):
 
         @spec("returns empty string when parameter has no error.")
