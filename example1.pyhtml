@@ -1,0 +1,106 @@
+<?py # -*- coding: utf-8 -*- ?>
+<?py #@ARGS form ?>
+<?py
+from formhelper import selected
+fh = FormHelper(form)
+?>
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+  </head>
+  <body>
+    <h1>FormHelper Example</h1>
+
+    <form>
+
+      <dl class="form">
+
+        <?py k = 'name' ?>
+        <dt>Name:</dt>
+        <dd>
+          <span #{fh.ec(k)}><input type="text" #{fh.nv(k)} size="50" /></span>
+          <div>#{fh.em(k)}</div>
+        </dd>
+
+        <?py k = 'age' ?>
+        <dt>Age:</dt>
+        <dd>
+          <span #{fh.ec(k)}><input type="text" #{fh.nv(k)} size="3" /></span>#{fh.em(k)}
+        </dd>
+
+        <?py k = 'month' ?>
+        <dt>Month:</dt>
+        <dd>
+          <span #{fh.ec(k)}>
+            <select name="${k}">
+              <input value="">-</input>
+              <?py v = form.params.get(k, '') ?>
+              <?py v = int(v) if v.isdigit() else v ?>
+              <?py i = 0 ?>
+              <?py for label in form.MONTHS: ?>
+              <?py     i += 1 ?>
+              <option value="${i}" #{selected(v==i)}>${label}</option>
+              <?py #endfor ?>
+            </select>
+          </span>#{fh.em(k)}
+        </dd>
+
+        <?py k = 'gender' ?>
+        <dt>Gender:</dt>
+        <dd>
+          <span #{fh.ec(k)}>
+            <label><input type="radio" #{fh.nvc(k, 'M')} />Man</label>
+            <label><input type="radio" #{fh.nvc(k, 'W')} />Woman</label>
+          </span>#{fh.em(k)}
+        </dd>
+
+        <?py k1 = 'role_flag' ?>
+        <?py k2 = 'role_id';  v2 = form.params.get(k2) ?>
+        <?py k3 = 'role_name' ?>
+        <dt>Role:</dt>
+        <dd>
+          <div #{fh.ec(k1)}>
+            <div>
+              <label>
+                <input type="radio" #{fh.nvc(k1, 'Y')} />Select from:
+                <span #{fh.ec(k2)}>
+                  <select name="${k2}">
+                    <?py for id, label in form.ROLES.items(): ?>
+                    <option value="${id}" #{selected(v2==id)}>${label}</option>
+                    <?py #endfor ?>
+                  </select>
+                </span>#{fh.em(k2)}
+              </label>
+            </div>
+            <div>
+              <label>
+                <input type="radio" #{fh.nvc(k1, 'N')} />Create new one:
+                <span #{fh.ec(k3)}>
+                  <input type="text" #{fh.nv(k3)} size="20" />
+                </span>#{fh.em(k3)}
+              </label>
+            </div>
+          </div>#{fh.em(k1)}
+        </dd>
+
+        <?py k = 'confirmed' ?>
+        <dt>Confirmed</dt>
+        <dd>
+          <div>Are you confirmed?</div>
+          <span #{fh.ec(k)}>
+            <label><input type="checkbox" #{fh.nvc(k, 'Y')} />Yes, I confirmed.</label>
+          </span>
+          <div>#{fh.em(k)}</div>
+        </dd>
+
+      </dl>
+
+      <p>
+        <input type="submit" />
+      </p>
+
+    </form>
+
+  </body>
+</html>
