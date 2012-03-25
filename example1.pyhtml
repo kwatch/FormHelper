@@ -2,7 +2,6 @@
 <?py #@ARGS form ?>
 <?py
 from formhelper import selected
-fh = FormHelper(form)
 ?>
 <!DOCTYPE html>
 <html>
@@ -31,7 +30,7 @@ fh = FormHelper(form)
     </style>
   </head>
   <body>
-    <h1>FormHelper Example</h1>
+    <h1>Example</h1>
 
     <form>
 
@@ -107,9 +106,10 @@ fh = FormHelper(form)
         <dt>Confirmed</dt>
         <dd>
           <div>Are you confirmed?</div>
-          <div #{fi.ec}>
+          <span #{fi.ec}>
             <label><input type="checkbox" #{fi.nvc('Y')} />Yes, I confirmed.</label>
-          </div>#{fi.em}
+          </span>
+          <div>#{fi.em}</div>
         </dd>
 
       </dl>
