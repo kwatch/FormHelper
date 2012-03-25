@@ -56,6 +56,38 @@ with topic('Form'):
             ok (fi.error) == ''
 
 
+    with topic('#to_hidden_parameters()'):
+
+        @spec("converts form parameters into hidden parameters.")
+        def _(self):
+            try:
+                from collections import OrderedDict
+                params = OrderedDict([('member', 'Haruhi'), ('team', 'SOS')])
+            except ImportError:
+                params = {'member': 'Haruhi', 'team': 'SOS'}
+            form = Form(params)
+            actual = form.to_hidden_parameters()
+            expected = ('<input type="hidden" name="member" value="Haruhi" />\n'
+                        '<input type="hidden" name="team" value="SOS" />')
+            ok (actual) == expected
+
+        @spec("skips parameters which name starts with '_'.")
+        def _(self):
+            params = {'member': 'Sasaki', '_preview': 'Y', '_submit': 'Submit'}
+            form = Form(params)
+            actual = form.to_hidden_parameters()
+            expected = '<input type="hidden" name="member" value="Sasaki" />'
+            ok (actual) == expected
+
+        @spec("escapes name and value.")
+        def _(self):
+            params = {'name&<>"': 'value&<>"'}
+            form = Form(params)
+            actual = form.to_hidden_parameters()
+            expected = '<input type="hidden" name="name&amp;&lt;&gt;&#34;" value="value&amp;&lt;&gt;&#34;" />'
+            ok (actual) == expected
+
+
 with topic('FormItem'):
 
 
