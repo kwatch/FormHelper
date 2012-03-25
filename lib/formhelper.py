@@ -22,6 +22,16 @@ class Form(object):
         error = self.errors.get(name, '')
         return FormItem(name, value, error)
 
+    def to_hidden_parameters(self):
+        buf = []; add = buf.append
+        params = self.params
+        for k in params:
+            if not k.startswith('_'):
+                v = params.get(k, '')
+                add('<input type="hidden" name="%s" value="%s" />' % \
+                                           (escape(k), escape(v)))
+        return '\n'.join(buf)
+
 
 class FormItem(object):
 
