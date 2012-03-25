@@ -148,6 +148,12 @@ with topic('FormHelper'):
             ok (  valid_form_helper.nv('name')) == Markup('name="name" value="Haruhi"')
             ok (invalid_form_helper.nv('name')) == Markup('name="name" value=""')
 
+        @spec("param name is optional when #param() is called before.")
+        def _(self, valid_form_helper, invalid_form_helper):
+            with valid_form_helper.param('name'):
+                ok (  valid_form_helper.nv()) == Markup('name="name" value="Haruhi"')
+            with invalid_form_helper.param('name'):
+                ok (invalid_form_helper.nv()) == Markup('name="name" value=""')
 
 
     with topic('#nvc()'):

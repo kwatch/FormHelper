@@ -49,8 +49,9 @@ class FormHelper(object):
             return Markup('<em class="%s">%s</em>' % (emclass, escape(errmsg),))
         return ''
 
-    def nv(self, name):
+    def nv(self, name=None):
         """returns ' name="..." value="..."'."""
+        if name is None: name = self.last_param
         value = self._form.params.get(name, '')
         return Markup('name="%s" value="%s"' % (escape(name), escape(value)))
 
