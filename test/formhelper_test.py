@@ -104,6 +104,16 @@ with topic('FormHelper'):
             fh = invalid_form_helper
             ok (fh.ec('name')) == Markup('class="err-exist"')
 
+        @spec("param name is optional when #param() is called before.")
+        def _(self, valid_form_helper, invalid_form_helper):
+            fh = valid_form_helper
+            with fh.param('name'):
+                ok (fh.ec()) == ''
+            #
+            fh = invalid_form_helper
+            with fh.param('name'):
+                ok (fh.ec()) == Markup('class="err-exist"')
+
 
     with topic('#em()'):
 

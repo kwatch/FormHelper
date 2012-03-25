@@ -32,8 +32,13 @@ class FormHelper(object):
         self._param_stack.append(name)
         return self
 
-    def ec(self, name):
+    @property
+    def last_param(self):
+        return self._param_stack[-1]
+
+    def ec(self, name=None):
         """returns 'class="err-exist"' when form parameter has error."""
+        if name is None: name = self.last_param
         return self._form.errors.get(name) and self._ERR_EXIST or ''
 
     def em(self, name, emclass='err-desc'):
