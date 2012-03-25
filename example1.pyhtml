@@ -16,82 +16,79 @@ fh = FormHelper(form)
 
       <dl class="form">
 
-        <?py k = 'name' ?>
+        <?py fi = form.item('name') ?>
         <dt>Name:</dt>
         <dd>
-          <span #{fh.ec(k)}><input type="text" #{fh.nv(k)} size="50" /></span>
-          <div>#{fh.em(k)}</div>
+          <span #{fi.ec}><input type="text" #{fi.nv} size="50" /></span>
+          <div>#{fi.em}</div>
         </dd>
 
-        <?py k = 'age' ?>
+        <?py fi = form.item('name') ?>
         <dt>Age:</dt>
         <dd>
-          <span #{fh.ec(k)}><input type="text" #{fh.nv(k)} size="3" /></span>#{fh.em(k)}
+          <span #{fi.ec}><input type="text" #{fi.nv} size="3" /></span>#{fi.em}
         </dd>
 
-        <?py k = 'month' ?>
+        <?py fi = form.item('month') ?>
         <dt>Month:</dt>
         <dd>
-          <span #{fh.ec(k)}>
-            <select name="${k}">
-              <input value="">-</input>
-              <?py v = form.params.get(k, '') ?>
-              <?py v = int(v) if v.isdigit() else v ?>
+          <span #{fi.ec}>
+            <select name="${fi.name}">
+              <option value="">-</option>
               <?py i = 0 ?>
               <?py for label in form.MONTHS: ?>
               <?py     i += 1 ?>
-              <option value="${i}" #{selected(v==i)}>${label}</option>
+              <option #{fi.vs(i)}>${label}</option>
               <?py #endfor ?>
             </select>
-          </span>#{fh.em(k)}
+          </span>#{fi.em}
         </dd>
 
-        <?py k = 'gender' ?>
+        <?py fi = form.item('gender') ?>
         <dt>Gender:</dt>
         <dd>
-          <span #{fh.ec(k)}>
-            <label><input type="radio" #{fh.nvc(k, 'M')} />Man</label>
-            <label><input type="radio" #{fh.nvc(k, 'W')} />Woman</label>
-          </span>#{fh.em(k)}
+          <span #{fi.ec}>
+            <label><input type="radio" #{fi.nvc('M')} />Man</label>
+            <label><input type="radio" #{fi.nvc('W')} />Woman</label>
+          </span>#{fi.em}
         </dd>
 
-        <?py k1 = 'role_flag' ?>
-        <?py k2 = 'role_id';  v2 = form.params.get(k2) ?>
-        <?py k3 = 'role_name' ?>
+        <?py fi0 = form.item('role_flag') ?>
         <dt>Role:</dt>
         <dd>
-          <div #{fh.ec(k1)}>
+          <div #{fi0.ec}>
             <div>
               <label>
-                <input type="radio" #{fh.nvc(k1, 'Y')} />Select from:
-                <span #{fh.ec(k2)}>
-                  <select name="${k2}">
+                <?py fi = form.item('role_id') ?>
+                <input type="radio" #{fi.nvc('Y')} />Select from:
+                <span #{fi.ec}>
+                  <select name="${fi.name}">
                     <?py for id, label in form.ROLES.items(): ?>
-                    <option value="${id}" #{selected(v2==id)}>${label}</option>
+                    <option #{fi.vs(id)}>${label}</option>
                     <?py #endfor ?>
                   </select>
-                </span>#{fh.em(k2)}
+                </span>#{fi.em}
               </label>
             </div>
             <div>
               <label>
-                <input type="radio" #{fh.nvc(k1, 'N')} />Create new one:
-                <span #{fh.ec(k3)}>
-                  <input type="text" #{fh.nv(k3)} size="20" />
-                </span>#{fh.em(k3)}
+                <?py fi = form.item('role_name') ?>
+                <input type="radio" #{fi.nvc('N')} />Create new one:
+                <span #{fi.ec}>
+                  <input type="text" #{fi.nv} size="20" />
+                </span>#{fi.em}
               </label>
             </div>
-          </div>#{fh.em(k1)}
+          </div>#{fi0.em}
         </dd>
 
-        <?py k = 'confirmed' ?>
+        <?py fi = form.item('confirmed') ?>
         <dt>Confirmed</dt>
         <dd>
           <div>Are you confirmed?</div>
-          <span #{fh.ec(k)}>
-            <label><input type="checkbox" #{fh.nvc(k, 'Y')} />Yes, I confirmed.</label>
-          </span>
-          <div>#{fh.em(k)}</div>
+          <div #{fi.ec}>
+            <label><input type="checkbox" #{fi.nvc('Y')} />Yes, I confirmed.</label>
+          </div>#{fi.em}
         </dd>
 
       </dl>
