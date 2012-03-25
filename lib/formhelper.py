@@ -17,6 +17,42 @@ class Form(object):
         raise NotImplementedError("%s.validate(): not implemented yet." % self.__class__.__name__)
 
 
+class FormItem(object):
+
+    _ERR_EXIST = Markup('class="err-exist"')
+    _EMPTY     = Markup('')
+
+    def __init__(self, name, value, error):
+        self.name  = name
+        self.value = value
+        self.error = error
+
+    @property
+    def ec(self):
+        """returns 'class="err-exist"' when form parameter has error."""
+        return self.error and self._ERR_EXIST or self._EMPTY
+
+    @property
+    def em(self):
+        """returns '<em class="err-desc">MESSAGE</em>' when form parameter has error."""
+        return self.error and Markup('<em class="err-desc">%s</em>' % escape(self.error)) or self._EMPTY
+
+    @property
+    def nv(self):
+        """returns 'name="..." value="..."'."""
+        return Markup('name="%s" value="%s"' % (escape(self.name), escape(self.value)))
+
+    def nvc(self, value):
+        """returns 'name="..." value="..." checked="checked"'."""
+        checked = self.value == value and ' checked="checked"' or ''
+        return Markup('name="%s" value="%s"%s' % (escape(self.name), escape(value), checked))
+
+    def vs(self, value):
+        """returns 'value="..." selected="selected"'."""
+        selected = self.value == value and ' selected="selected"' or ''
+        return Markup('value="%s"%s' % (escape(value), selected))
+
+
 class FormHelper(object):
 
     _ERR_EXIST = Markup('class="err-exist"')

@@ -5,7 +5,7 @@ from bakatest import ok, prepare, topic, spec, fixture
 prepare()
 
 from markupsafe import Markup, escape
-from formhelper import Form, FormHelper, checked, selected, disabled
+from formhelper import Form, FormItem, FormHelper, checked, selected, disabled
 
 
 with topic('Form'):
@@ -32,6 +32,120 @@ with topic('Form'):
             form = Form({})
             def fn(): form.validate()
             ok (fn).raise_(NotImplementedError)
+
+
+with topic('FormItem'):
+
+
+    with topic('#__init__()'):
+
+        @spec("takes parameter name, value, and error message.")
+        def _(self):
+            fi = FormItem('name1', 'value1', 'error1')
+            ok (fi.name)  == 'name1'
+            ok (fi.value) == 'value1'
+            ok (fi.error) == 'error1'
+
+
+    @fixture
+    def fx_valid_fi(self):    return FormItem('name1', 'value1', '')
+
+    @fixture
+    def fx_invalid_fi(self):  return FormItem('name2', 'value2', 'error2')
+
+
+    with topic('#ec'):
+
+        @spec("returns 'class=\"err-exist\"' when form parameter has error.")
+        def _(self, invalid_fi):
+            ok (invalid_fi.ec) == Markup('class="err-exist"')
+
+        @spec("returns empty string when form parameter has no error.")
+        def _(self, valid_fi):
+            ok (valid_fi.ec) == ''
+
+        @spec("returns Markup object.")
+        def _(self, valid_fi, invalid_fi):
+            ok (  valid_fi.ec).is_a(Markup)
+            ok (invalid_fi.ec).is_a(Markup)
+
+
+    with topic('#em'):
+
+        @spec("returns '<em class=\"err-desc\">MESSAGE</em>' when form parameter has error.")
+        def _(self, invalid_fi):
+            ok (invalid_fi.em) == Markup('<em class="err-desc">error2</em>')
+
+        @spec("returns empty string when form parameter has no error.")
+        def _(self, valid_fi):
+            ok (valid_fi.em) == ''
+
+        @spec("returns Markup object.")
+        def _(self, valid_fi, invalid_fi):
+            ok (  valid_fi.em).is_a(Markup)
+            ok (invalid_fi.em).is_a(Markup)
+
+
+    @fixture
+    def fx_fi1():  return FormItem('name1', 'value1', 'error1')
+
+    @fixture
+    def fx_fi2():  return FormItem('name&<>"', 'value&<>"', 'error&<>"')
+
+
+    with topic('#nv'):
+
+        @spec("""returns 'name="..." value="..."'.""")
+        def _(self, fi1):
+            ok (fi1.nv) == Markup('name="name1" value="value1"')
+
+        @spec("escapes 'name' and 'value' attribute values.")
+        def _(self, fi2):
+            ok (fi2.nv) == Markup('name="name&amp;&lt;&gt;&#34;" value="value&amp;&lt;&gt;&#34;"')
+
+        @spec("returns Markup object.")
+        def _(self, fi1):
+            ok (fi1.nv).is_a(Markup)
+
+
+    with topic('#nvc()'):
+
+        @spec("""returns 'name="..." value="..." checked="checked"' when argument is equal to param value.""")
+        def _(self, fi1):
+            ok (fi1.nvc('value1')) == Markup('name="name1" value="value1" checked="checked"')
+
+        @spec("""returns 'name="..." value="..." checked="checked"' when argument is different from param value.""")
+        def _(self, fi1):
+            ok (fi1.nvc('value2')) == Markup('name="name1" value="value2"')
+
+        @spec("escapes 'name' and 'value' attribute values.")
+        def _(self, fi2):
+            ok (fi2.nvc('value&<>"')) == Markup('name="name&amp;&lt;&gt;&#34;" value="value&amp;&lt;&gt;&#34;" checked="checked"')
+
+        @spec("returns Markup object.")
+        def _(self, fi1):
+            ok (fi1.nvc('value1')).is_a(Markup)
+            ok (fi1.nvc('value2')).is_a(Markup)
+
+
+    with topic('#vs()'):
+
+        @spec("""returns 'value="..." selected="selected"' when argument is different from param value.""")
+        def _(self, fi1):
+            ok (fi1.vs('value1')) == Markup('value="value1" selected="selected"')
+
+        @spec("""returns 'value="...'' when argument is different from param value.""")
+        def _(self, fi1):
+            ok (fi1.vs('value2')) == Markup('value="value2"')
+
+        @spec("escapes 'value' attribute values.")
+        def _(self, fi2):
+            ok (fi2.vs('value&<>"')) == Markup('value="value&amp;&lt;&gt;&#34;" selected="selected"')
+
+        @spec("returns Markup object.")
+        def _(self, fi1):
+            ok (fi1.vs('value1')).is_a(Markup)
+            ok (fi1.vs('value2')).is_a(Markup)
 
 
 class HelloForm(Form):
