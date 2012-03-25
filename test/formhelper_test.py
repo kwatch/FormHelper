@@ -170,6 +170,21 @@ with topic('FormHelper'):
             valid_form.params['radio2'] = 'val2'
             ok (valid_form_helper.nvc('radio2', 'val2')) == Markup('name="radio2" value="val2" checked="checked"')
 
+        @spec("param name is optional when #param() is called before.")
+        def _(self, valid_form, valid_form_helper, invalid_form, invalid_form_helper):
+            fh = valid_form_helper
+            valid_form.params['radio1'] = ''
+            with fh.param('radio1'):
+                ok (fh.nvc('val1')) == Markup('name="radio1" value="val1"')
+            valid_form.params['radio1'] = 'xxx'
+            with fh.param('radio1'):
+                ok (fh.nvc('val1')) == Markup('name="radio1" value="val1"')
+            #
+            fh = invalid_form_helper
+            invalid_form.params['radio2'] = 'val2'
+            with fh.param('radio2'):
+                ok (fh.nvc('val2')) == Markup('name="radio2" value="val2" checked="checked"')
+
 
 with topic('<global>'):
 

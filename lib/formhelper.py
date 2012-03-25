@@ -4,6 +4,9 @@ from collections import OrderedDict
 from markupsafe import Markup, escape
 
 
+UNDEFINED = object()
+
+
 class Form(object):
 
     def __init__(self, params):
@@ -55,8 +58,11 @@ class FormHelper(object):
         value = self._form.params.get(name, '')
         return Markup('name="%s" value="%s"' % (escape(name), escape(value)))
 
-    def nvc(self, name, value):
+    def nvc(self, name, value=UNDEFINED):
         """returns 'name="..." value="..." checked="checked"'."""
+        if value is UNDEFINED:
+            value = name
+            name  = self.last_param
         checked = self._form.params.get(name, '') == value
         s = checked and ' checked="checked"' or ''
         return Markup('name="%s" value="%s"%s' % (escape(name), escape(value), s))
