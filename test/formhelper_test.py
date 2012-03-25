@@ -129,6 +129,17 @@ with topic('FormHelper'):
             ok (errmsg) == 'Required.'
             ok (fh.em('name')) == Markup('<em class="err-desc">%s</em>' % errmsg)
 
+        @spec("param name is optional when #param() is called before.")
+        def _(self, valid_form_helper, invalid_form_helper):
+            fh = valid_form_helper
+            with fh.param('name'):
+                ok (fh.em()) == ''
+            #
+            fh = invalid_form_helper
+            errmsg = fh._form.errors.get('name')
+            with fh.param('name'):
+                ok (fh.em()) == Markup('<em class="err-desc">%s</em>' % errmsg)
+
 
     with topic('#nv()'):
 

@@ -41,8 +41,9 @@ class FormHelper(object):
         if name is None: name = self.last_param
         return self._form.errors.get(name) and self._ERR_EXIST or ''
 
-    def em(self, name, emclass='err-desc'):
+    def em(self, name=None, emclass='err-desc'):
         """returns '<em class="err-desc">MESSAGE</em>' when form parameter has error."""
+        if name is None: name = self.last_param
         errmsg = self._form.errors.get(name)
         if errmsg:
             return Markup('<em class="%s">%s</em>' % (emclass, escape(errmsg),))
