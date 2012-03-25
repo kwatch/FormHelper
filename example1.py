@@ -2,7 +2,7 @@
 
 from collections import OrderedDict
 
-from formhelper import Form, FormHelper
+from formhelper import Form
 import tenjin
 from tenjin.helpers import *
 

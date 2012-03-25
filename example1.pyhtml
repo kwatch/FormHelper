@@ -1,8 +1,5 @@
 <?py # -*- coding: utf-8 -*- ?>
 <?py #@ARGS form ?>
-<?py
-from formhelper import selected
-?>
 <!DOCTYPE html>
 <html>
   <head>
