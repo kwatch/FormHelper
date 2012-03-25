@@ -147,6 +147,11 @@ with topic('FormItem'):
             ok (fi1.vs('value1')).is_a(Markup)
             ok (fi1.vs('value2')).is_a(Markup)
 
+        @spec("converts value into string when comparing with param value.")
+        def _(self):
+            fi = FormItem('x', '1', '')
+            ok (fi.vs(1)) == Markup('value="1" selected="selected"')
+
 
 class HelloForm(Form):
 

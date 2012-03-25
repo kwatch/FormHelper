@@ -49,7 +49,7 @@ class FormItem(object):
 
     def vs(self, value):
         """returns 'value="..." selected="selected"'."""
-        selected = self.value == value and ' selected="selected"' or ''
+        selected = self.value == str(value) and ' selected="selected"' or ''
         return Markup('value="%s"%s' % (escape(value), selected))
 
 
