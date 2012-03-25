@@ -16,6 +16,12 @@ class Form(object):
     def validate(self):
         raise NotImplementedError("%s.validate(): not implemented yet." % self.__class__.__name__)
 
+    def item(self, name):
+        """returns FormItem object."""
+        value = self.params.get(name, '')
+        error = self.errors.get(name, '')
+        return FormItem(name, value, error)
+
 
 class FormItem(object):
 

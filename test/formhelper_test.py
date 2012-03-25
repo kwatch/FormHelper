@@ -34,6 +34,28 @@ with topic('Form'):
             ok (fn).raise_(NotImplementedError)
 
 
+    with topic('#item()'):
+
+        @spec("returns FormItem object.")
+        def _(self):
+            params = {'member': 'Haruhi'}
+            form = Form(params)
+            form.errors['member'] = 'Not found.'
+            fi = form.item('member')
+            ok (fi).is_a(FormItem)
+            ok (fi.name)  == 'member'
+            ok (fi.value) == 'Haruhi'
+            ok (fi.error) == 'Not found.'
+
+        @spec("uses empty string when value/error doesn't exist.")
+        def _(self):
+            form = Form({})
+            fi = form.item('member')
+            ok (fi.name)  == 'member'
+            ok (fi.value) == ''
+            ok (fi.error) == ''
+
+
 with topic('FormItem'):
 
 
